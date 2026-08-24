@@ -24,7 +24,9 @@ const { block } = Astro.props;
         block.steps.map((step, i) => (
           <div class="flex flex-col gap-5 border border-border bg-background p-8">
             <div class="flex items-center gap-3">
-              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-sm text-primary-foreground">{i + 1}</span>
+              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-sm text-primary-foreground">
+                {i + 1}
+              </span>
               <h3 class="text-lg text-primary" set:html={richText(step.title)} />
             </div>
 

@@ -28,12 +28,7 @@ const { cta } = block;
       {
         block.images.map((image) => (
           <figure class="flex flex-col gap-3">
-            <SiteImage
-              image={image}
-              class="aspect-square object-cover"
-              widths={[400, 800]}
-              sizes="(min-width: 768px) 25vw, 50vw"
-            />
+            <SiteImage image={image} class="aspect-square object-cover" widths={[400, 800]} sizes="(min-width: 768px) 25vw, 50vw" />
             {(image.title || image.text) && (
               <figcaption class="flex flex-col gap-2">
                 {image.title && <span class="text-base leading-snug text-foreground" set:html={richText(image.title)} />}

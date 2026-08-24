@@ -29,11 +29,7 @@ const classes = ['text-center text-xs tracking-[0.2em] uppercase transition-all'
 
 {
   cta && (
-    <a
-      {...linkProps(cta.link)}
-      {...(cta.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      href={cta.link}
-      class={classes}>
+    <a {...linkProps(cta.link)} {...(cta.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})} href={cta.link} class={classes}>
       {cta.text}
     </a>
   )

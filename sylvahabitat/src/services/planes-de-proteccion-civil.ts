@@ -1,6 +1,4 @@
 import type { ServicePage } from '@websites/template/types';
-import hero from '../assets/service2/hero.png';
-import info from '../assets/service2/info.jpg';
 import service1 from '../assets/service2/1.jpg';
 import service2 from '../assets/service2/2.jpg';
 import service3 from '../assets/service2/3.jpg';
@@ -9,6 +7,8 @@ import service5 from '../assets/service2/5.jpg';
 import service6 from '../assets/service2/6.jpg';
 import service7 from '../assets/service2/7.png';
 import service8 from '../assets/service2/8.webp';
+import hero from '../assets/service2/hero.png';
+import info from '../assets/service2/info.jpg';
 
 // Draft: copy from the design. Images reuse the placeholder until the real assets land.
 export default {
@@ -27,8 +27,7 @@ export default {
       type: 'info',
       nav: 'Protección civil',
       title: 'Prevención y gestión de _~emergencias~_.',
-      text1:
-        '_Nuestra empresa ofrece una gama integral de servicios para la prevención y gestión de emergencias._',
+      text1: '_Nuestra empresa ofrece una gama integral de servicios para la prevención y gestión de emergencias._',
       text2:
         'Nos especializamos en la elaboración de planes de contingencia, análisis de riesgos y simulacros de evacuación. Nuestro objetivo es minimizar el impacto de las emergencias y proteger a las comunidades y sus bienes.\n\nLa experiencia en diversos sectores nos permite adaptarnos a diferentes necesidades y escenarios. Además, mantenemos una constante actualización en normativas y tecnologías emergentes, asegurando que nuestros métodos sean los más avanzados y efectivos.\n\nEl equipo de nuestra empresa está compuesto por profesionales altamente cualificados con una vasta experiencia en la gestión de emergencias y la protección civil: ingenieros, especialistas en seguridad y consultores certificados.',
       image: { src: info, alt: '' },

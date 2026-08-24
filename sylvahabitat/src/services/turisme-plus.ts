@@ -1,10 +1,10 @@
 import type { ServicePage } from '@websites/template/types';
-import hero from '../assets/turisme/hero.jpg';
-import info from '../assets/turisme/info.jpg';
 import ecotour1 from '../assets/turisme/1.jpeg';
 import ecotour2 from '../assets/turisme/2.jpeg';
 import ecotour3 from '../assets/turisme/3.png';
 import ecotour4 from '../assets/turisme/4.jpeg';
+import hero from '../assets/turisme/hero.jpg';
+import info from '../assets/turisme/info.jpg';
 import partner1 from '../assets/turisme/partner1.png';
 import partner2 from '../assets/turisme/partner2.png';
 import partner3 from '../assets/turisme/partner3.png';
@@ -49,12 +49,7 @@ export default {
       type: 'videos',
       nav: 'Ecotour Challenge',
       title: '_Vídeos del Ecotour Challenge._',
-      videos: [
-        'https://vimeo.com/798342368',
-        'https://vimeo.com/813328467',
-        'https://vimeo.com/813328428',
-        'https://vimeo.com/813328428',
-      ],
+      videos: ['https://vimeo.com/798342368', 'https://vimeo.com/813328467', 'https://vimeo.com/813328428', 'https://vimeo.com/813328428'],
     },
     {
       type: 'clients',

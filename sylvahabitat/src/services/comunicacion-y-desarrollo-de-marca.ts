@@ -1,11 +1,11 @@
 import type { ServicePage } from '@websites/template/types';
-import hero from '../assets/service5/hero.jpg';
-import info from '../assets/service5/info.jpg';
 import service1 from '../assets/service5/1.png';
 import service2 from '../assets/service5/2.png';
 import service3 from '../assets/service5/3.png';
 import service4 from '../assets/service5/4.jpg';
 import service5 from '../assets/service5/5.png';
+import hero from '../assets/service5/hero.jpg';
+import info from '../assets/service5/info.jpg';
 
 // Draft: copy from the design. Card bullet lists use inline *bold* labels + line breaks.
 export default {

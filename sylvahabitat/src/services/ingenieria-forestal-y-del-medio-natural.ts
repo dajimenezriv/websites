@@ -1,5 +1,4 @@
 import type { ServicePage } from '@websites/template/types';
-import hero from '../assets/service1/hero.jpg';
 import service1 from '../assets/service1/1.jpg';
 import service2 from '../assets/service1/2.jpeg';
 import service3 from '../assets/service1/3.jpg';
@@ -16,6 +15,7 @@ import service13 from '../assets/service1/13.jpg';
 import service14 from '../assets/service1/14.jpg';
 import service15 from '../assets/service1/15.jpg';
 import service16 from '../assets/service1/16.jpg';
+import hero from '../assets/service1/hero.jpg';
 import info from '../assets/service1/info.jpg';
 
 // Draft: title/summary from the landing; full copy pending the real service page.

@@ -1,11 +1,11 @@
 import type { ServicePage } from '@websites/template/types';
-import hero from '../assets/service4/hero.png';
-import info from '../assets/service4/info.jpg';
 import service1 from '../assets/service4/1.jpg';
 import service2 from '../assets/service4/2.jpg';
 import service3 from '../assets/service4/3.jpg';
 import service4 from '../assets/service4/4.jpg';
 import service5 from '../assets/service4/5.jpg';
+import hero from '../assets/service4/hero.png';
+import info from '../assets/service4/info.jpg';
 
 // Draft: copy from the design.
 export default {
