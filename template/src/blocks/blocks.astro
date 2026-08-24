@@ -1,0 +1,47 @@
+---
+import type { Block, SiteData } from '../types';
+import Clients from './clients.astro';
+import Cta from './cta.astro';
+import Gallery from './gallery.astro';
+import Info from './info.astro';
+import Location from './location.astro';
+import Reviews from './reviews.astro';
+import Services from './services.astro';
+import Stats from './stats.astro';
+import Steps from './steps.astro';
+import Team from './team.astro';
+import Videos from './videos.astro';
+
+interface Props {
+  data: SiteData;
+  blocks: Block[];
+}
+
+const { data, blocks } = Astro.props;
+
+const REGISTRY: Record<Block['type'], any> = {
+  stats: Stats,
+  info: Info,
+  cta: Cta,
+  gallery: Gallery,
+  reviews: Reviews,
+  services: Services,
+  location: Location,
+  clients: Clients,
+  steps: Steps,
+  team: Team,
+  videos: Videos,
+};
+
+// Fail the build rather than silently dropping a section a client is paying for.
+for (const block of blocks) {
+  if (!REGISTRY[block.type]) throw new Error(`No component registered for block type "${block.type}"`);
+}
+---
+
+{
+  blocks.map((block) => {
+    const Component = REGISTRY[block.type];
+    return <Component data={data} block={block} />;
+  })
+}

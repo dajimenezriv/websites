@@ -1,0 +1,37 @@
+---
+import { legalHref } from '../legal';
+import { richTextBody } from '../rich-text';
+import type { LegalPage, SiteData } from '../types';
+import { socialImageUrl } from '../utils';
+import Shell from './shell.astro';
+
+interface Props {
+  data: SiteData;
+  page: LegalPage;
+}
+
+const { data, page } = Astro.props;
+const { blocks, domain } = data;
+
+const canonical = `${domain}${legalHref(page.slug)}`;
+---
+
+<Shell
+  data={data}
+  title={page.metaTitle}
+  description={page.metaDescription}
+  canonical={canonical}
+  imageUrl={socialImageUrl(blocks.homepage.hero.image, domain)}
+  jsonLd={JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', name: page.title, url: canonical })}>
+  <section class="flex justify-center px-6 pt-32 pb-24 md:px-0 md:pt-48">
+    <div class="w-full max-w-3xl">
+      <nav aria-label="Breadcrumb" class="mb-4 text-xs tracking-[0.2em] uppercase">
+        <a href="/" class="text-foreground/70 transition-colors hover:text-foreground">{blocks.name}</a>
+        <span class="text-foreground/40"> / </span>
+        <span class="text-foreground/40">{page.title}</span>
+      </nav>
+      <h1 class="text-4xl font-light md:text-6xl">{page.title}</h1>
+      <div set:html={richTextBody(page.body)} />
+    </div>
+  </section>
+</Shell>

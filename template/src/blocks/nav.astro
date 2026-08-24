@@ -1,0 +1,182 @@
+---
+import type { SiteData } from '../types';
+import { pageHref } from '../utils';
+import CtaLink from './cta-link.astro';
+import SiteImage from './site-image.astro';
+
+interface Props {
+  data: SiteData;
+}
+
+const { data } = Astro.props;
+const block = data.blocks.nav;
+const groups = data.blocks.groups;
+const pages = data.blocks.pages ?? [];
+const hasMenu = groups.length > 0 || pages.length > 0;
+---
+
+<nav class="fixed top-0 right-0 left-0 z-50 border-b border-border opacity-90 backdrop-blur-sm">
+  <div class="flex items-center px-6 py-5 md:px-10">
+    <div class="flex flex-1 items-center">
+      <a class="text-xs tracking-[0.25em] uppercase" href="/">
+        {block.image ? <SiteImage image={block.image} class="h-8 w-auto object-contain" width={240} priority /> : data.blocks.name}
+      </a>
+    </div>
+
+    {/* Desktop: centered groups, each revealing its dropdown on hover / focus. */}
+    {
+      hasMenu && (
+        <div class="hidden flex-1 items-center justify-center gap-6 md:flex">
+          <a href="/" class="text-xs tracking-[0.25em] uppercase transition-colors hover:text-primary">
+            Inicio
+          </a>
+          {groups.map((group) => (
+            <div class="group relative">
+              <button
+                type="button"
+                class="flex items-center gap-1.5 text-xs tracking-[0.25em] uppercase transition-colors group-hover:text-primary">
+                {group.title}
+                <svg
+                  aria-hidden="true"
+                  class="h-3 w-3 transition-transform group-focus-within:rotate-180 group-hover:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <div class="invisible absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                <ul class="flex w-72 flex-col border border-border bg-background py-2 shadow-lg">
+                  {group.pages.map((page) => (
+                    <li>
+                      <a
+                        href={pageHref(page.slug)}
+                        class="block px-4 py-2 text-xs tracking-[0.12em] uppercase transition-colors hover:bg-accent hover:text-primary">
+                        {page.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+          {pages.map((page) => (
+            <a href={pageHref(page.slug)} class="text-xs tracking-[0.25em] uppercase transition-colors hover:text-primary">
+              {page.title}
+            </a>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="flex flex-1 items-center justify-end gap-4">
+      {/* CTA drops out on very small screens so the hamburger has room. */}
+      <div class={hasMenu ? 'hidden sm:block' : ''}>
+        <CtaLink cta={block.cta} size="sm" />
+      </div>
+
+      {
+        hasMenu && (
+          <button
+            type="button"
+            aria-expanded="false"
+            aria-controls="mobile-panel"
+            aria-label="Menú de navegación"
+            data-toggle
+            class="flex items-center md:hidden">
+            <svg aria-hidden="true" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+            </svg>
+          </button>
+        )
+      }
+    </div>
+  </div>
+
+  {/* Mobile: hamburger opens this panel; each group is a click accordion. */}
+  {
+    hasMenu && (
+      <div id="mobile-panel" hidden class="border-t border-border bg-background px-6 py-2 md:hidden">
+        <div class="border-b border-border/50">
+          <a href="/" class="block py-3 text-xs tracking-[0.25em] uppercase transition-colors hover:text-primary">
+            Inicio
+          </a>
+        </div>
+        {groups.map((group, i) => (
+          <div class="border-b border-border/50 last:border-0">
+            <button
+              type="button"
+              aria-expanded="false"
+              aria-controls={`group-mobile-${i}`}
+              data-toggle
+              class="flex w-full items-center justify-between py-3 text-xs tracking-[0.25em] uppercase transition-colors hover:text-primary">
+              {group.title}
+              <svg
+                data-caret
+                aria-hidden="true"
+                class="h-3.5 w-3.5 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            <ul id={`group-mobile-${i}`} hidden class="pb-2">
+              {group.pages.map((page) => (
+                <li>
+                  <a
+                    href={pageHref(page.slug)}
+                    class="block py-2 pl-3 text-xs tracking-[0.15em] text-foreground/70 uppercase transition-colors hover:text-primary">
+                    {page.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        {pages.map((page) => (
+          <div class="border-b border-border/50 last:border-0">
+            <a href={pageHref(page.slug)} class="block py-3 text-xs tracking-[0.25em] uppercase transition-colors hover:text-primary">
+              {page.title}
+            </a>
+          </div>
+        ))}
+      </div>
+    )
+  }
+</nav>
+
+<style>
+  [data-toggle][aria-expanded='true'] [data-caret] {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  const toggles = document.querySelectorAll<HTMLButtonElement>('[data-toggle]');
+
+  function setOpen(button: HTMLButtonElement, open: boolean) {
+    button.setAttribute('aria-expanded', String(open));
+    const target = document.getElementById(button.getAttribute('aria-controls') ?? '');
+    if (target) target.hidden = !open;
+  }
+
+  toggles.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setOpen(button, button.getAttribute('aria-expanded') !== 'true');
+    });
+  });
+
+  function closeAll() {
+    toggles.forEach((button) => setOpen(button, false));
+  }
+
+  // Clicking away or pressing Escape closes any open menu.
+  document.addEventListener('click', closeAll);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAll();
+  });
+</script>

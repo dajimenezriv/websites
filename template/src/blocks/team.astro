@@ -1,0 +1,52 @@
+---
+import { richText } from '../rich-text';
+import type { TeamBlock } from '../types';
+import { linkProps } from '../utils';
+import SiteImage from './site-image.astro';
+
+interface Props {
+  block: TeamBlock;
+}
+
+const { block } = Astro.props;
+const cols = block.circle ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-4';
+---
+
+<section class="flex justify-center px-6 py-24 md:px-0">
+  <div class="flex w-full max-w-250 flex-col gap-14">
+    <div>
+      <p class="text-xs tracking-[0.25em] text-primary uppercase">
+        — {block.nav}
+      </p>
+      <h2 class="mt-4 text-5xl" set:html={richText(block.title)} />
+    </div>
+
+    <div class:list={['grid gap-8', cols]}>
+      {
+        block.members.map((member) => (
+          <div class="flex flex-col gap-4">
+            <SiteImage
+              image={member.image}
+              class:list={['object-cover', block.circle ? 'mx-auto aspect-square w-40 rounded-full' : 'aspect-3/4 w-full']}
+              widths={[300, 600]}
+              sizes="(min-width: 1024px) 25vw, 50vw"
+            />
+            <div class="flex flex-1 flex-col gap-2">
+              <p class="text-sm text-primary">— {member.name}</p>
+              <p class="text-xs leading-relaxed text-muted-foreground" set:html={richText(member.bio)} />
+              <a
+                {...linkProps(member.linkedin)}
+                href={member.linkedin}
+                aria-label={`LinkedIn de ${member.name}`}
+                class="mt-auto pt-2 text-foreground/60 transition-colors hover:text-primary">
+                <svg aria-hidden="true" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

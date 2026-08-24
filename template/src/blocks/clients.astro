@@ -1,0 +1,32 @@
+---
+import { richText } from '../rich-text';
+import type { ClientsBlock } from '../types';
+import SiteImage from './site-image.astro';
+
+interface Props {
+  block: ClientsBlock;
+}
+
+const { block } = Astro.props;
+---
+
+<section class="flex justify-center px-6 py-24 md:px-0">
+  <div class="flex w-full max-w-250 flex-col gap-14">
+    <div>
+      <p class="text-xs tracking-[0.25em] text-primary uppercase">
+        — {block.nav}
+      </p>
+      <h2 class="mt-4 text-5xl" set:html={richText(block.title)} />
+    </div>
+
+    <div class="grid grid-cols-2 items-center gap-x-8 gap-y-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      {
+        block.logos.map((logo) => (
+          <div class="flex justify-center">
+            <SiteImage image={logo} class="h-16 w-auto object-contain" width={200} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

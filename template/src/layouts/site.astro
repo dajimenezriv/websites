@@ -1,0 +1,34 @@
+---
+import Blocks from '../blocks/blocks.astro';
+import Hero from '../blocks/hero.astro';
+import type { SiteData } from '../types';
+import { socialImageUrl } from '../utils';
+import Shell from './shell.astro';
+
+interface Props {
+  data: SiteData;
+}
+
+const { data } = Astro.props;
+const { blocks, domain } = data;
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: blocks.name,
+  address: blocks.address,
+  telephone: blocks.phone,
+  email: blocks.email,
+});
+---
+
+<Shell
+  data={data}
+  title={blocks.metaTitle}
+  description={blocks.metaDescription}
+  canonical={domain}
+  imageUrl={socialImageUrl(blocks.homepage.hero.image, domain)}
+  jsonLd={jsonLd}>
+  <Hero data={data} block={blocks.homepage.hero} />
+  <Blocks data={data} blocks={blocks.homepage.blocks} />
+</Shell>

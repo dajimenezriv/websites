@@ -1,0 +1,117 @@
+---
+import Blocks from '../blocks/blocks.astro';
+import CtaLink from '../blocks/cta-link.astro';
+import SiteImage from '../blocks/site-image.astro';
+import { richText, richTextBody } from '../rich-text';
+import type { ServicePage, SiteData } from '../types';
+import { pageHref, servicePages, socialImageUrl, standalonePages, telHref } from '../utils';
+import Shell from './shell.astro';
+
+interface Props {
+  data: SiteData;
+  page: ServicePage;
+}
+
+const { data, page } = Astro.props;
+const { blocks, domain } = data;
+const { cta } = page;
+const phoneCta = { text: blocks.phone, link: telHref(blocks.phone) };
+
+const canonical = `${domain}/${page.slug}`;
+// Standalone pages (e.g. Equipo) don't belong to the service catalogue, so they skip the
+// "Otros servicios" list.
+const isStandalone = standalonePages(blocks).some((p) => p.slug === page.slug);
+const relatedPages = isStandalone ? [] : servicePages(blocks).filter((p) => p.slug !== page.slug);
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      name: page.title,
+      provider: {
+        '@type': 'LocalBusiness',
+        name: blocks.name,
+        address: blocks.address,
+        telephone: blocks.phone,
+        email: blocks.email,
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: blocks.name, item: domain },
+        { '@type': 'ListItem', position: 2, name: page.title, item: canonical },
+      ],
+    },
+  ],
+});
+---
+
+<Shell
+  data={data}
+  title={page.metaTitle}
+  description={page.metaDescription}
+  canonical={canonical}
+  imageUrl={socialImageUrl(page.image, domain)}
+  jsonLd={jsonLd}>
+  <header class="relative flex min-h-screen items-end md:min-h-[70vh]">
+    <Fragment>
+      <SiteImage image={page.image} class="absolute h-full w-full object-cover" widths={[640, 1024, 1600, 2048]} sizes="100vw" priority />
+      <div class="absolute inset-0 bg-linear-to-t from-background via-background/70 to-background/50"></div>
+    </Fragment>
+
+    <div class="z-10 m-6 flex max-w-full flex-col md:m-30">
+      <nav aria-label="Breadcrumb" class="mb-4 text-xs tracking-[0.2em] uppercase">
+        <a href="/" class="text-foreground/70 transition-colors hover:text-foreground">{blocks.name}</a>
+        <span class="text-foreground/40"> / </span>
+        <span class="text-foreground/40">{page.title}</span>
+      </nav>
+      <h1 class="text-4xl font-light wrap-break-word sm:text-5xl md:text-7xl" set:html={richText(page.h1)} />
+      {page.intro && <p class="mt-8 md:max-w-150" set:html={richText(page.intro)} />}
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+        <CtaLink cta={cta} />
+        <CtaLink cta={phoneCta} variant="ghost" />
+      </div>
+    </div>
+  </header>
+
+  {page.blocks && page.blocks.length > 0 && <Blocks data={data} blocks={page.blocks} />}
+
+  {
+    page.body && (
+      <section class="flex justify-center px-6 py-24 md:px-0">
+        <div class="w-full max-w-3xl" set:html={richTextBody(page.body)} />
+      </section>
+    )
+  }
+
+  {
+    relatedPages.length > 0 && (
+      <section class="flex justify-center px-6 py-24 md:px-0">
+        <div class="flex w-full max-w-3xl flex-col gap-8">
+          <h2 class="text-4xl">Otros servicios</h2>
+          <ul class="flex flex-col">
+            {relatedPages.map((related) => (
+              <li class="border-t border-foreground/10">
+                <a href={pageHref(related.slug)} class="flex py-4 text-lg transition-colors hover:text-primary">
+                  {related.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    cta && (
+      <section class="flex justify-center px-6 py-24 text-center md:px-0">
+        <div class="max-w-2xl px-6">
+          <CtaLink cta={cta} class="mt-8 inline-block" />
+        </div>
+      </section>
+    )
+  }
+</Shell>

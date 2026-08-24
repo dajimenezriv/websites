@@ -1,0 +1,58 @@
+---
+import { legalHref, legalPages } from '../legal';
+import { richText } from '../rich-text';
+import type { FooterBlock, SiteData } from '../types';
+import { telHref } from '../utils';
+import FooterColumn from './footer-column.astro';
+
+interface Props {
+  data: SiteData;
+  block: FooterBlock;
+}
+
+const { data, block } = Astro.props;
+
+const contactLinks: Array<{ label: string; url: string }> = [];
+if (data.blocks.phone)
+  contactLinks.push({
+    label: data.blocks.phone,
+    url: telHref(data.blocks.phone),
+  });
+if (data.blocks.address) contactLinks.push({ label: data.blocks.address, url: '' });
+
+// Derived rather than hand-authored per site: these two pages are legally required, so
+// linking them can't be left as something a content file may forget to fill in.
+const legalLinks = legalPages(data).map((page) => ({ label: page.title, url: legalHref(page.slug) }));
+---
+
+<footer class="px-6 py-12 md:px-24 md:py-16">
+  <div class="flex flex-col gap-10 md:flex-row md:gap-0">
+    <div class="flex-1">
+      <div class="mb-5 flex items-center gap-3">
+        <span class="text-xs tracking-[0.25em] uppercase">{data.blocks.name}</span>
+      </div>
+      <p class="text-xs leading-relaxed text-foreground/40" set:html={richText(block.description)} />
+    </div>
+
+    <FooterColumn title="Contacto" links={contactLinks} />
+    <FooterColumn title="Enlaces" links={block.links} />
+  </div>
+
+  <div class="mt-12 flex flex-col gap-4 border-t border-foreground/10 pt-6 md:flex-row md:items-center md:justify-between">
+    <p class="text-xs text-foreground/40">
+      © {new Date().getFullYear()}{' '}
+      {data.blocks.name}
+    </p>
+    <ul class="flex flex-wrap gap-6">
+      {
+        legalLinks.map((link) => (
+          <li>
+            <a href={link.url} class="text-xs text-foreground/40 transition-colors hover:text-foreground">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</footer>

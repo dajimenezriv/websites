@@ -1,0 +1,44 @@
+---
+import { richText } from '../rich-text';
+import type { StepsBlock } from '../types';
+
+interface Props {
+  block: StepsBlock;
+}
+
+const { block } = Astro.props;
+---
+
+<section class="flex justify-center bg-secondary px-6 py-24 md:px-0">
+  <div class="flex w-full max-w-250 flex-col gap-14">
+    <div>
+      <p class="text-xs tracking-[0.25em] text-primary uppercase">
+        — {block.nav}
+      </p>
+      <h2 class="mt-4 text-5xl" set:html={richText(block.title)} />
+      {block.text && <p class="mt-4 max-w-150 text-sm leading-relaxed text-secondary-foreground/60" set:html={richText(block.text)} />}
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        block.steps.map((step, i) => (
+          <div class="flex flex-col gap-5 border border-border bg-background p-8">
+            <div class="flex items-center gap-3">
+              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-sm text-primary-foreground">{i + 1}</span>
+              <h3 class="text-lg text-primary" set:html={richText(step.title)} />
+            </div>
+
+            <div class="flex flex-col gap-4">
+              {step.items.map((item) => (
+                <div class="flex flex-col gap-1">
+                  <span class="text-sm font-medium text-foreground" set:html={richText(item.label)} />
+                  <p class="text-xs leading-relaxed text-muted-foreground" set:html={richText(item.text)} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,56 @@
+---
+import { richText } from '../rich-text';
+import type { GalleryBlock } from '../types';
+import CtaLink from './cta-link.astro';
+import SiteImage from './site-image.astro';
+
+interface Props {
+  block: GalleryBlock;
+}
+
+const { block } = Astro.props;
+const { cta } = block;
+---
+
+<section class="flex justify-center p-6 md:p-24">
+  <div class="flex w-full max-w-400 flex-col gap-10">
+    <div class="flex flex-col gap-4">
+      <p class="text-xs tracking-[0.25em] text-primary uppercase">
+        — {block.nav}
+      </p>
+      <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <h2 class="text-5xl" set:html={richText(block.title)} />
+        <p class="text-sm leading-relaxed md:w-150 md:text-end" set:html={richText(block.text)} />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
+      {
+        block.images.map((image) => (
+          <figure class="flex flex-col gap-3">
+            <SiteImage
+              image={image}
+              class="aspect-square object-cover"
+              widths={[400, 800]}
+              sizes="(min-width: 768px) 25vw, 50vw"
+            />
+            {(image.title || image.text) && (
+              <figcaption class="flex flex-col gap-2">
+                {image.title && <span class="text-base leading-snug text-foreground" set:html={richText(image.title)} />}
+                {image.text && <p class="text-xs leading-relaxed text-muted-foreground" set:html={richText(image.text)} />}
+              </figcaption>
+            )}
+          </figure>
+        ))
+      }
+    </div>
+
+    {
+      cta && (
+        <div class="mt-12 flex justify-center">
+          <CtaLink cta={cta} variant="outline" />
+        </div>
+      )
+    }
+  </div>
+</section>

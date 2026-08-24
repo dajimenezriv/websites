@@ -1,0 +1,25 @@
+{
+  "name": "henaco",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "pnpm build && npx wrangler pages deploy dist --project-name=henaco --branch=main",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "catalog:",
+    "sharp": "^0.35.3",
+    "tailwindcss": "catalog:",
+    "@websites/template": "workspace:*"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^6.0.3"
+  }
+}

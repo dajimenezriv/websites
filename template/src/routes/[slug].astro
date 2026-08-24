@@ -1,0 +1,16 @@
+---
+import { content } from 'virtual:site-content';
+import ServicePage from '../layouts/service-page.astro';
+import { servicePages, standalonePages } from '../utils';
+
+export function getStaticPaths() {
+  return [...servicePages(content.blocks), ...standalonePages(content.blocks)].map((page) => ({
+    params: { slug: page.slug },
+    props: { data: content, page },
+  }));
+}
+
+const { data, page } = Astro.props;
+---
+
+<ServicePage data={data} page={page} />

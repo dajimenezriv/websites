@@ -1,0 +1,37 @@
+---
+import { richText } from '../rich-text';
+import type { InfoBlock } from '../types';
+import SiteImage from './site-image.astro';
+
+interface Props {
+  block: InfoBlock;
+}
+
+const { block } = Astro.props;
+---
+
+<section class="flex justify-center px-6 py-24 md:px-0">
+  <div class="flex w-full max-w-250 flex-col">
+    <p class="text-xs tracking-[0.25em] text-primary uppercase">
+      — {block.nav}
+    </p>
+    <h2 class="mt-4 text-5xl" set:html={richText(block.title)} />
+
+    <div class="mt-10 flex flex-col gap-10 md:mt-20 md:flex-row md:gap-20">
+      <div class="flex flex-1 flex-col gap-10">
+        <blockquote class="border-l-2 border-primary pl-6 text-lg" set:html={richText(block.text1)} />
+        <p set:html={richText(block.text2)} />
+      </div>
+
+      <SiteImage
+        image={block.image}
+        class:list={[
+          'aspect-square w-full md:aspect-auto md:h-130 md:w-130',
+          block.imageFit === 'contain' ? 'object-contain' : 'object-cover',
+        ]}
+        widths={[520, 1040]}
+        sizes="(min-width: 768px) 520px, 100vw"
+      />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+---
+import { richText } from '../rich-text';
+import type { VideosBlock } from '../types';
+
+interface Props {
+  block: VideosBlock;
+}
+
+const { block } = Astro.props;
+
+// Accepts a full Vimeo watch URL (vimeo.com/123456) or a bare id, returns the player embed URL.
+function embedSrc(video: string): string {
+  const id = video.match(/\d+/)?.[0] ?? video;
+  return `https://player.vimeo.com/video/${id}`;
+}
+---
+
+<section class="flex justify-center p-6 md:p-24">
+  <div class="flex w-full max-w-400 flex-col gap-10">
+    <div>
+      <p class="text-xs tracking-[0.25em] text-primary uppercase">
+        — {block.nav}
+      </p>
+      <h2 class="mt-4 text-5xl" set:html={richText(block.title)} />
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
+      {
+        block.videos.map((video, i) => (
+          <div class="aspect-video">
+            <iframe
+              src={embedSrc(video)}
+              title={`Vídeo ${i + 1}`}
+              class="h-full w-full border-0"
+              loading="lazy"
+              allow="fullscreen; picture-in-picture"
+              allowfullscreen
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

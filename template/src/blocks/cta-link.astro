@@ -1,0 +1,40 @@
+---
+import type { Cta } from '../types';
+import { linkProps } from '../utils';
+
+interface Props {
+  cta: Cta | undefined;
+  variant?: 'solid' | 'outline' | 'ghost';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { cta, variant = 'solid', size = 'md', class: className = '' } = Astro.props;
+
+const VARIANTS = {
+  solid: 'bg-primary text-primary-foreground hover:opacity-90',
+  outline: 'border-primary/60 text-primary hover:bg-primary hover:text-primary-foreground border',
+  ghost: 'border-foreground/40 hover:border-foreground border',
+};
+
+const SIZES = {
+  sm: 'px-6 py-2',
+  md: 'px-8 py-3',
+};
+
+const classes = ['text-center text-xs tracking-[0.2em] uppercase transition-all', VARIANTS[variant], SIZES[size], className]
+  .filter(Boolean)
+  .join(' ');
+---
+
+{
+  cta && (
+    <a
+      {...linkProps(cta.link)}
+      {...(cta.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      href={cta.link}
+      class={classes}>
+      {cta.text}
+    </a>
+  )
+}

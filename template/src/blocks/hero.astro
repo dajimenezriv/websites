@@ -1,0 +1,33 @@
+---
+import { richText } from '../rich-text';
+import type { HeroBlock, SiteData } from '../types';
+import { telHref } from '../utils';
+import CtaLink from './cta-link.astro';
+import SiteImage from './site-image.astro';
+
+interface Props {
+  data: SiteData;
+  block: HeroBlock;
+}
+
+const { data, block } = Astro.props;
+const { cta } = block;
+const { phone } = data.blocks;
+const phoneCta = { text: phone, link: telHref(phone) };
+---
+
+<section class="relative flex min-h-screen items-end">
+  <SiteImage image={block.image} class="absolute h-full w-full object-cover" widths={[640, 1024, 1600, 2048]} sizes="100vw" priority />
+  <div class="absolute inset-0 bg-linear-to-t from-background via-background/70 to-background/50"></div>
+
+  <div class="z-10 m-6 flex max-w-full flex-col md:m-30">
+    <h1 class="text-5xl font-light wrap-break-word sm:text-6xl md:text-8xl" set:html={richText(block.title)} />
+
+    <p class="mt-8 md:max-w-150" set:html={richText(block.text)} />
+
+    <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+      <CtaLink cta={cta} />
+      <CtaLink cta={phoneCta} variant="ghost" />
+    </div>
+  </div>
+</section>

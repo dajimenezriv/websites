@@ -1,0 +1,13 @@
+packages:
+  - 'template'
+  - 'gestel'
+  - 'henaco'
+  - 'sylvahabitat'
+allowBuilds:
+  esbuild: true
+  sharp: true
+minimumReleaseAge: 1440
+catalog:
+  '@tailwindcss/vite': ^4.3.3
+  astro: ^7.1.1
+  tailwindcss: ^4.3.3

@@ -1,0 +1,34 @@
+{
+  "name": "@websites/template",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "exports": {
+    "./styles.css": "./src/styles.css",
+    "./types": "./src/types.ts",
+    "./integration": "./src/integration.ts",
+    "./routes/index.astro": "./src/routes/index.astro",
+    "./routes/404.astro": "./src/routes/404.astro",
+    "./routes/[slug].astro": "./src/routes/[slug].astro",
+    "./routes/legal/[slug].astro": "./src/routes/legal/[slug].astro",
+    "./routes/robots.txt.ts": "./src/routes/robots.txt.ts",
+    "./routes/sitemap.xml.ts": "./src/routes/sitemap.xml.ts"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "catalog:"
+  },
+  "peerDependencies": {
+    "astro": "catalog:",
+    "tailwindcss": "catalog:"
+  },
+  "scripts": {
+    "check": "astro check"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "astro": "catalog:",
+    "typescript": "^6.0.3"
+  }
+}

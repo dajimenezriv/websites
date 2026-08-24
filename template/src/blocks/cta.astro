@@ -1,0 +1,29 @@
+---
+import { richText } from '../rich-text';
+import type { CtaBlock } from '../types';
+import CtaLink from './cta-link.astro';
+import SiteImage from './site-image.astro';
+
+interface Props {
+  block: CtaBlock;
+}
+
+const { block } = Astro.props;
+const { cta } = block;
+---
+
+<section class="relative flex min-h-96 items-center justify-center py-32 text-center">
+  <SiteImage image={block.image} class="absolute inset-0 h-full w-full object-cover" widths={[640, 1024, 1600, 2048]} sizes="100vw" />
+  <div class="absolute inset-0 bg-background/80"></div>
+  <div class="relative z-10 max-w-2xl px-6 md:px-8">
+    <h2 class="text-4xl leading-tight md:text-6xl" set:html={richText(block.title)} />
+    <p class="mt-6 text-sm leading-relaxed" set:html={richText(block.text)} />
+    {
+      cta && (
+        <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
+          <CtaLink cta={cta} />
+        </div>
+      )
+    }
+  </div>
+</section>

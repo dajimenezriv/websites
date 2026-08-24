@@ -1,0 +1,37 @@
+{
+  "[env]": {
+    "editor.defaultFormatter": "IronGeek.vscode-env"
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
+  "css.customData": [".vscode/tailwind.json"],
+  "editor.formatOnSave": true,
+  "editor.guides.indentation": false,
+  "editor.insertSpaces": true,
+  "editor.linkedEditing": true,
+  "editor.rulers": [88],
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "explorer.compactFolders": false,
+  "explorer.sortOrder": "filesFirst",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true
+  },
+  "git.ignoreLimitWarning": true,
+  "js/ts.referencesCodeLens.enabled": true,
+  "markdown.extension.toc.levels": "2..4",
+  "markdown.extension.toc.slugifyMode": "github",
+  "markdown.extension.toc.updateOnSave": true,
+  "search.exclude": {
+    "**/*.svg": true,
+    "**/dist": true,
+    "**/pnpm-lock.yaml": true
+  },
+  "workbench.editor.enablePreview": true
+}

@@ -1,0 +1,54 @@
+---
+import Footer from '../blocks/footer.astro';
+import Nav from '../blocks/nav.astro';
+import type { SiteData } from '../types';
+import '../styles.css';
+
+interface Props {
+  data: SiteData;
+  title: string;
+  description: string;
+  canonical: string;
+  imageUrl: string;
+  jsonLd: string;
+}
+
+const { data, title, description, canonical, imageUrl, jsonLd } = Astro.props;
+const { blocks, styles } = data;
+
+const paletteVars = Object.entries(styles)
+  .map(([key, value]) => `--site-${key}: ${value}`)
+  .join('; ');
+---
+
+<html lang="es" class="scroll-smooth" style={paletteVars}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={blocks.faviconUrl} />
+    <link rel="apple-touch-icon" href={blocks.faviconUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+
+    <script type="application/ld+json" set:html={jsonLd} is:inline />
+  </head>
+  <body>
+    <div class="min-h-screen bg-background text-foreground">
+      <Nav data={data} />
+      <slot />
+      <Footer data={data} block={blocks.footer} />
+    </div>
+  </body>
+</html>

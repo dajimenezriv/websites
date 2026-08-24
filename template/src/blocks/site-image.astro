@@ -1,0 +1,34 @@
+---
+import { Image } from 'astro:assets';
+import type { Image as ImageProp } from '../types';
+
+interface Props {
+  image: ImageProp;
+  class?: string;
+  // Rendered widths to generate; needs `sizes` alongside it. Omit for images shown at their natural size.
+  widths?: number[];
+  sizes?: string;
+  width?: number;
+  // Above-the-fold images: load eagerly and jump the queue instead of lazy-loading.
+  priority?: boolean;
+}
+
+const { image, class: className, widths, sizes, width, priority = false } = Astro.props;
+
+const shared = {
+  alt: image.alt,
+  class: className,
+  loading: priority ? ('eager' as const) : ('lazy' as const),
+  decoding: priority ? ('sync' as const) : ('async' as const),
+  fetchpriority: priority ? ('high' as const) : undefined,
+};
+---
+
+{
+  /* Remote images can't be optimized or measured at build time, so they fall back to a plain tag. */
+  typeof image.src === 'string' ? (
+    <img src={image.src} {...shared} />
+  ) : (
+    <Image src={image.src} widths={widths} sizes={sizes} width={width} {...shared} />
+  )
+}

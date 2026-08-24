@@ -1,0 +1,27 @@
+---
+import { content } from 'virtual:site-content';
+import CtaLink from '../blocks/cta-link.astro';
+import Shell from '../layouts/shell.astro';
+import { socialImageUrl } from '../utils';
+
+const { blocks, domain } = content;
+---
+
+<Shell
+  data={content}
+  title={`Página no encontrada | ${blocks.name}`}
+  description="La página que buscas no existe o ha cambiado de dirección."
+  canonical={`${domain}/404`}
+  imageUrl={socialImageUrl(blocks.homepage.hero.image, domain)}
+  jsonLd={JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Página no encontrada' })}>
+  <section class="flex min-h-[60vh] items-center justify-center px-6 pt-32 pb-24 md:px-0 md:pt-48">
+    <div class="w-full max-w-3xl text-center">
+      <p class="text-xs tracking-[0.2em] text-foreground/40 uppercase">Error 404</p>
+      <h1 class="mt-4 text-4xl font-light md:text-6xl">Página no encontrada</h1>
+      <p class="mt-6 text-foreground/70">La página que buscas no existe o ha cambiado de dirección.</p>
+      <div class="mt-10 flex justify-center">
+        <CtaLink cta={{ text: 'Volver al inicio', link: '/' }} />
+      </div>
+    </div>
+  </section>
+</Shell>

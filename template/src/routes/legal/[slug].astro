@@ -1,0 +1,16 @@
+---
+import { content } from 'virtual:site-content';
+import LegalPage from '../../layouts/legal-page.astro';
+import { legalPages } from '../../legal';
+
+export function getStaticPaths() {
+  return legalPages(content).map((page) => ({
+    params: { slug: page.slug },
+    props: { data: content, page },
+  }));
+}
+
+const { data, page } = Astro.props;
+---
+
+<LegalPage data={data} page={page} />

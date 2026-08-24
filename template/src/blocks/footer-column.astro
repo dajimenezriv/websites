@@ -1,0 +1,27 @@
+---
+import { linkProps } from '../utils';
+
+interface Props {
+  title: string;
+  links: Array<{ label: string; url: string }>;
+}
+
+const { title, links } = Astro.props;
+---
+
+{
+  links.length > 0 && (
+    <div class="flex-1 flex-col gap-2 md:text-center">
+      <p class="mb-2 text-xs tracking-[0.2em] text-primary uppercase">{title}</p>
+      <ul>
+        {links.map((link) => (
+          <li>
+            <a {...linkProps(link.url)} href={link.url} class="text-xs text-foreground/40 transition-colors hover:text-foreground">
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

@@ -1,0 +1,59 @@
+---
+import { richText } from '../rich-text';
+import type { LocationBlock, SiteData } from '../types';
+import CtaLink from './cta-link.astro';
+
+interface Props {
+  data: SiteData;
+  block: LocationBlock;
+}
+
+const { data, block } = Astro.props;
+const { schedule, cta } = block;
+
+const details = [{ label: 'Dirección', value: data.blocks.address }, { label: 'Teléfono', value: data.blocks.phone }, ...block.details];
+---
+
+<section class="flex justify-center bg-secondary px-6 py-24 text-foreground md:px-0">
+  <div class="flex w-full max-w-300 flex-col gap-12 md:flex-row md:items-center md:gap-20">
+    <div class="flex flex-1 flex-col">
+      <p class="mb-6 text-xs tracking-[0.25em] text-primary uppercase">
+        — {block.nav}
+      </p>
+      <h2 class="mb-8 text-5xl leading-tight md:mb-14 md:text-7xl" set:html={richText(block.title)} />
+
+      <div>
+        {
+          details.map((detail) => (
+            <div class="flex gap-12 border-t border-foreground/10 py-6">
+              <span class="w-30 shrink-0 text-xs tracking-[0.2em] text-primary/70 uppercase">{detail.label}</span>
+              <p class="text-sm" set:html={richText(detail.value)} />
+            </div>
+          ))
+        }
+
+        <div class="flex flex-col gap-3 border-t border-foreground/10 py-6 md:flex-row md:gap-12">
+          <span class="w-30 shrink-0 text-xs tracking-[0.2em] text-primary/70 uppercase"> Horario </span>
+          <div class="grid grid-cols-2 gap-x-8 gap-y-1.5 text-sm md:block md:space-y-1.5">
+            {
+              schedule.map((item) => (
+                <div class="contents md:flex md:gap-8">
+                  <span class="md:w-36">{item.label}</span>
+                  <span set:html={richText(item.value)} />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <CtaLink cta={cta} class="mt-10" />
+    </div>
+
+    <iframe
+      src={block.mapUrl}
+      title={`${block.nav} map`}
+      class="flex aspect-square w-full flex-1 border-0 md:w-120"
+      loading="lazy"></iframe>
+  </div>
+</section>

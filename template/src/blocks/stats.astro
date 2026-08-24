@@ -1,0 +1,20 @@
+---
+import type { StatsBlock } from '../types';
+
+interface Props {
+  block: StatsBlock;
+}
+
+const { block } = Astro.props;
+---
+
+<section class="grid grid-cols-2 border-y border-foreground/10 md:flex md:justify-around">
+  {
+    block.stats.map((stat) => (
+      <div class="flex-1 border-foreground/10 px-4 py-6 text-center last:odd:col-span-2 even:border-l nth-[n+3]:border-t md:border-l md:px-10 md:py-8 md:first:border-l-0 md:nth-[n+3]:border-t-0">
+        <div class="text-2xl text-primary italic md:text-3xl">{stat.value}</div>
+        <div class="mt-2 text-xs tracking-[0.2em] text-foreground/40 uppercase">{stat.label}</div>
+      </div>
+    ))
+  }
+</section>

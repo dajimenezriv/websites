@@ -1,0 +1,54 @@
+---
+import { richText } from '../rich-text';
+import type { ReviewsBlock } from '../types';
+
+interface Props {
+  block: ReviewsBlock;
+}
+
+const { block } = Astro.props;
+---
+
+<section class="flex justify-center p-6 md:p-24">
+  <div class="flex max-w-400 flex-col">
+    <div class="mb-8 flex flex-col gap-6 md:mb-16 md:flex-row md:items-start md:justify-between md:gap-16">
+      <div>
+        <p class="mb-4 text-xs tracking-[0.25em] text-primary uppercase">
+          — {block.nav}
+        </p>
+        <h2 class="text-5xl text-foreground" set:html={richText(block.title)} />
+      </div>
+
+      {
+        block.stats.length > 0 && (
+          <div class="shrink-0 border border-primary/30 p-6">
+            <div class="flex divide-x divide-primary/20">
+              {block.stats.map((stat) => (
+                <div class="px-8 text-center first:pl-0 last:pr-0">
+                  <div class="text-4xl text-primary italic">{stat.value}</div>
+                  <div class="mt-1 text-primary">★★★★★</div>
+                  <div class="mt-2 text-xs tracking-[0.15em] text-foreground/30 uppercase">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {
+        block.reviews.map((review) => (
+          <div class="flex flex-col border border-secondary-foreground/10 bg-secondary p-8">
+            <div class="text-lg text-primary">★★★★★</div>
+            <p class="mt-4 flex-1 text-sm leading-relaxed text-secondary-foreground/80" set:html={`"${richText(review.text)}"`} />
+            <div class="mt-6 flex items-center justify-between border-t border-secondary-foreground/10 pt-4">
+              <span class="text-xs tracking-[0.15em] text-secondary-foreground/30 uppercase">{review.author}</span>
+              <span class="text-xs tracking-[0.15em] text-secondary-foreground/25 uppercase">{review.source}</span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

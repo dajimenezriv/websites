@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+/* Tailwind skips node_modules during auto source detection, and clients resolve
+   this package through a workspace symlink — without this, none of the block
+   classes below would make it into the generated CSS. */
+@source './';
+
+/* `inline` keeps the utilities pointing at the --site-* vars instead of copying
+   their values, so a client swaps its whole palette from the <html> style attr
+   in site.astro without rebuilding the theme. */
+@theme inline {
+  --color-background: var(--site-background);
+  --color-foreground: var(--site-foreground);
+  --color-primary: var(--site-primary);
+  --color-primary-foreground: var(--site-primary-foreground);
+  --color-secondary: var(--site-secondary);
+  --color-secondary-foreground: var(--site-secondary-foreground);
+  --color-muted: var(--site-muted);
+  --color-muted-foreground: var(--site-muted-foreground);
+  --color-accent: var(--site-accent);
+  --color-accent-foreground: var(--site-accent-foreground);
+  --color-border: var(--site-border);
+  --color-ring: var(--site-ring);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
